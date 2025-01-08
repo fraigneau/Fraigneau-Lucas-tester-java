@@ -46,7 +46,7 @@ public class ParkingService {
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
 
-                if (ticketDAO.getNbTicket(vehicleRegNumber) > 1)
+                if (ticketDAO.getNbTicket(vehicleRegNumber) > 0)
                     System.out.println(
                             "Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
 
@@ -74,7 +74,7 @@ public class ParkingService {
             ticket.setOutTime(outTime);
 
             // Calcule du tarif (vérifie si c'est un utilisateur récurrent)
-            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(vehicleRegNumber) > 1);
+            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(vehicleRegNumber) > 0);
 
             if (ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
