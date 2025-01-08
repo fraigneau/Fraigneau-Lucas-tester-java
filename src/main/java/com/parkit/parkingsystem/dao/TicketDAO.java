@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger("TicketDAO");
+    private static int nbTicket = 0;
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
@@ -85,5 +86,25 @@ public class TicketDAO {
             dataBaseConfig.closeConnection(con);
         }
         return false;
+    }
+
+    public int getNbTicket(String vehicleRegNumber) {
+        Connection con = null;
+        nbTicket = 0;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKET);
+            ps.setString(1, vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                nbTicket = rs.getInt(1); // Retrieve the first column value (count)
+            }
+            dataBaseConfig.closePreparedStatement(ps);
+            dataBaseConfig.closeResultSet(rs);
+            return nbTicket;
+        } catch (Exception ex) {
+            logger.error("Error fetching next available slot", ex);
+            return -1;
+        }
     }
 }
