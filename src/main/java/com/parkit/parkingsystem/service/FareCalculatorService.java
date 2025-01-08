@@ -32,4 +32,11 @@ public class FareCalculatorService {
                 throw new IllegalArgumentException("Unkown Parking Type");
         }
     }
+
+    public void calculateFare(Ticket ticket, boolean discount) {
+        calculateFare(ticket);
+        if (discount) {
+            ticket.setPrice(ticket.getPrice() * Fare.DISCSOUNT);
+        }
+    }
 }
